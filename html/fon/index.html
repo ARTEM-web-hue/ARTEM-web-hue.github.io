@@ -18,8 +18,7 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Глобальная функция
-        window.imgZ = function(action, imageUrl, type) {
+        function imgZ(action, imageUrl, type) {
           const bgRef = doc(db, "backgrounds", "current");
           
           if (action === "Запись") {
@@ -36,41 +35,22 @@
               return docSnap.exists() ? docSnap.data().imageUrl : "";
             });
           }
-        };
-    </script>
-    <script>
-        let url=""
-        let image="";
-        let random=Math.random();
-            imgZ("Чтение", "", "img").then(url => {
+        }
+
+        // ТВОЙ КОД ЗДЕСЬ
+        let url = ""
+        let image = "";
+        let random = Math.random();
+        
+        imgZ("Чтение", "", "img").then(url => {
             console.log("Получил:", url);
-            image=url
+            image = url
             document.body.style.setProperty('--bg-image', `url('${image}')`);
         });
-        if (url == "") {
-        if(random<0.2){
-            image="папуасы.jpg";
-            document.body.style.setProperty('--bg-image', `url('${image}')`);
-        }
-        else if(random<0.4 && random>0.2){
-            image="water.jpg";
-            document.body.style.setProperty('--bg-image', `url('${image}')`);
-        }
-        else if(random<0.7 && random>0.4){
-            image="Природа.jpg";
-            document.body.style.setProperty('--bg-image', `url('${image}')`);
-        }
-        else if(random<0.991 && random>0.7){
-            image="smile.webp";
-            document.body.style.setProperty('--bg-image', `url('${image}')`);
-        }
-        else{
-            image="скример.mp4";
-            document.body.style.setProperty('--bg-image', `url('${image}')`);
-        }
-        };
-        document.getElementById("input").onclick=()=>{
-            image=prompt("Введите url фона");
+        
+        // ... остальной твой код
+        document.getElementById("input").onclick = () => {
+            image = prompt("Введите url фона");
             imgZ("Запись", image, "img");
             document.body.style.setProperty('--bg-image', `url('${image}')`);
         }
