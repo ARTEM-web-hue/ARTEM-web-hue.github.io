@@ -3,41 +3,40 @@
 <body id="body">
     <button id="input">Изменить фон</button>
     <script type="module">
-        // firebase.js
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
-import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAE-lU1QTK4zPboKV-LA8AJi4LoDXUHMlM",
-  authDomain: "img-html5.firebaseapp.com",
-  projectId: "img-html5",
-  storageBucket: "img-html5.firebasestorage.app",
-  messagingSenderId: "449060493639",
-  appId: "1:449060493639:web:8ac1cb3d5ae1e683db1462"
-};
+        const firebaseConfig = {
+          apiKey: "AIzaSyAE-lU1QTK4zPboKV-LA8AJi4LoDXUHMlM",
+          authDomain: "img-html5.firebaseapp.com",
+          projectId: "img-html5",
+          storageBucket: "img-html5.firebasestorage.app",
+          messagingSenderId: "449060493639",
+          appId: "1:449060493639:web:8ac1cb3d5ae1e683db1462"
+        };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-// Глобальная функция
-imgZ = function(action, imageUrl, type) {
-  const bgRef = doc(db, "backgrounds", "current");
-  
-  if (action === "Запись") {
-    setDoc(bgRef, {
-      imageUrl: imageUrl,
-      type: type || "img",
-      timestamp: Date.now(),
-      setBy: "user"
-    });
-    return "Записываю...";
-  } 
-  else if (action === "Чтение") {
-    return getDoc(bgRef).then((docSnap) => {
-      return docSnap.exists() ? docSnap.data().imageUrl : "";
-    });
-  }
-};
+        // Глобальная функция
+        window.imgZ = function(action, imageUrl, type) {
+          const bgRef = doc(db, "backgrounds", "current");
+          
+          if (action === "Запись") {
+            setDoc(bgRef, {
+              imageUrl: imageUrl,
+              type: type || "img",
+              timestamp: Date.now(),
+              setBy: "user"
+            });
+            return "Записываю...";
+          } 
+          else if (action === "Чтение") {
+            return getDoc(bgRef).then((docSnap) => {
+              return docSnap.exists() ? docSnap.data().imageUrl : "";
+            });
+          }
+        };
     </script>
     <script>
         let url=""
@@ -45,12 +44,13 @@ imgZ = function(action, imageUrl, type) {
         let random=Math.random();
             imgZ("Чтение", "", "img").then(url => {
             console.log("Получил:", url);
-            document.body.style.setProperty('--bg-image', `url('${image}')`);
             image=url
+            document.body.style.setProperty('--bg-image', `url('${image}')`);
         });
         if (url == "") {
         if(random<0.2){
-            let image="папуасы.jpg";
+            image="папуасы.jpg";
+            document.body.style.setProperty('--bg-image', `url('${image}')`);
         }
         else if(random<0.4 && random>0.2){
             image="water.jpg";
@@ -58,22 +58,26 @@ imgZ = function(action, imageUrl, type) {
         }
         else if(random<0.7 && random>0.4){
             image="Природа.jpg";
+            document.body.style.setProperty('--bg-image', `url('${image}')`);
         }
         else if(random<0.991 && random>0.7){
             image="smile.webp";
+            document.body.style.setProperty('--bg-image', `url('${image}')`);
         }
         else{
             image="скример.mp4";
+            document.body.style.setProperty('--bg-image', `url('${image}')`);
         }
         };
         document.getElementById("input").onclick=()=>{
             image=prompt("Введите url фона");
             imgZ("Запись", image, "img");
+            document.body.style.setProperty('--bg-image', `url('${image}')`);
         }
     </script>
     <style>
         #body{
-            background-image: image;
+            background-image: var(--bg-image);
         }
     </style>
 </body>
